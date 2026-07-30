@@ -40,13 +40,13 @@ body{margin:0;background:#0B0A0A;}
   </nav>
 
   <div ref="{{ logo }}" style="position:fixed;top:20px;left:clamp(20px,4vw,52px);z-index:60;transform-origin:top left;will-change:transform;pointer-events:none;">
-    <div style="position:relative;display:inline-flex;padding:7px 15px 9px;">
-      <span data-border="t" style="position:absolute;top:0;left:0;right:0;height:1.6px;background:var(--text);transform-origin:left center;transform:scaleX(0);animation:vdrawx 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:720ms;"></span>
-      <span data-border="r" style="position:absolute;top:0;right:0;bottom:0;width:1.6px;background:var(--text);transform-origin:center top;transform:scaleY(0);animation:vdrawy 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:830ms;"></span>
-      <span data-border="b" style="position:absolute;left:0;right:0;bottom:0;height:1.6px;background:var(--text);transform-origin:right center;transform:scaleX(0);animation:vdrawx 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:940ms;"></span>
-      <span data-border="l" style="position:absolute;top:0;left:0;bottom:0;width:1.6px;background:var(--text);transform-origin:center bottom;transform:scaleY(0);animation:vdrawy 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:1050ms;"></span>
-      <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;letter-spacing:0.015em;line-height:1;color:var(--text);display:inline-flex;">
-        <span data-letter style="display:inline-block;opacity:0;--hx:54px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:320ms;">V</span><span data-letter style="display:inline-block;opacity:0;--hx:36px;--hy:96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:260ms;">I</span><span data-letter style="display:inline-block;opacity:0;--hx:18px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:200ms;">L</span><span data-letter style="display:inline-block;opacity:0;--hx:0px;--hy:96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:140ms;">T</span><span data-letter style="display:inline-block;opacity:0;--hx:-18px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:200ms;">R</span><span data-letter style="display:inline-block;opacity:0;--hx:-36px;--hy:96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:260ms;">U</span><span data-letter style="display:inline-block;opacity:0;--hx:-54px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:320ms;">M</span>
+    <div style="position:relative;display:inline-flex;padding:28px 60px 36px;">
+      <span data-border="t" style="position:absolute;top:0;left:0;right:0;height:6.4px;background:var(--text);transform-origin:left center;transform:scaleX(0);animation:vdrawx 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:720ms;"></span>
+      <span data-border="r" style="position:absolute;top:0;right:0;bottom:0;width:6.4px;background:var(--text);transform-origin:center top;transform:scaleY(0);animation:vdrawy 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:830ms;"></span>
+      <span data-border="b" style="position:absolute;left:0;right:0;bottom:0;height:6.4px;background:var(--text);transform-origin:right center;transform:scaleX(0);animation:vdrawx 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:940ms;"></span>
+      <span data-border="l" style="position:absolute;top:0;left:0;bottom:0;width:6.4px;background:var(--text);transform-origin:center bottom;transform:scaleY(0);animation:vdrawy 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:1050ms;"></span>
+      <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:96px;letter-spacing:0.015em;line-height:1;color:var(--text);display:inline-flex;">
+        <span data-letter style="display:inline-block;opacity:0;--hx:216px;--hy:-384px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:320ms;">V</span><span data-letter style="display:inline-block;opacity:0;--hx:144px;--hy:384px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:260ms;">I</span><span data-letter style="display:inline-block;opacity:0;--hx:72px;--hy:-384px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:200ms;">L</span><span data-letter style="display:inline-block;opacity:0;--hx:0px;--hy:384px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:140ms;">T</span><span data-letter style="display:inline-block;opacity:0;--hx:-72px;--hy:-384px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:200ms;">R</span><span data-letter style="display:inline-block;opacity:0;--hx:-144px;--hy:384px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:260ms;">U</span><span data-letter style="display:inline-block;opacity:0;--hx:-216px;--hy:-384px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:320ms;">M</span>
       </span>
     </div>
   </div>
@@ -554,7 +554,7 @@ class Component extends DCLogic {
         const dockY = parseFloat(cs.top) || 20;
         const txHero = (vw - heroW) / 2 - dockX;
         const tyHero = (vh - scaledH) / 2 - dockY;
-        const scale = lerp(heroScale, 1, e);
+        const scale = lerp(heroScale, 0.25, e);
         const tx = lerp(txHero, 0, e);
         const ty = lerp(tyHero, 0, e);
         lg.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
