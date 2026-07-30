@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:#0B0A0A;}
+::selection{background:#E5241B;color:#fff;}
+@keyframes vmarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes vdot{0%{transform:translateY(0);opacity:0}25%{opacity:1}100%{transform:translateY(16px);opacity:0}}
+@keyframes vletter{from{opacity:0;transform:translate(var(--hx,0px),var(--hy,0px))}55%{opacity:1}to{opacity:1;transform:translate(0px,0px)}}
+@keyframes vdrawx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes vdrawy{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+</style>
+</helmet>
+
+<div ref="{{ root }}" style="--bg:#0B0A0A;--bg2:#100E0E;--card:#151312;--text:#ECE7DF;--muted:#8C857C;--faint:#B9B2A8;--line:rgba(236,231,223,0.12);--line2:rgba(236,231,223,0.22);--red:#E5241B;--ink:#0B0A0A; background:var(--bg); color:var(--text); font-family:'Space Grotesk',sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; position:relative; width:100%;">
+
+  <div style="position:fixed;top:0;left:0;right:0;height:2px;z-index:70;background:transparent;pointer-events:none;">
+    <div ref="{{ bar }}" style="height:100%;background:var(--red);transform-origin:left;transform:scaleX(0);"></div>
+  </div>
+
+  <nav ref="{{ nav }}" style="position:fixed;top:0;left:0;right:0;z-index:55;opacity:0;display:flex;align-items:center;justify-content:flex-end;gap:clamp(16px,2.4vw,34px);padding:18px clamp(20px,4vw,52px);background:var(--bg);border-bottom:1px solid var(--line);pointer-events:none;">
+    <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="5">
+      <a href="{{ link.href }}" style="font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;font-weight:500;white-space:nowrap;" style-hover="color:var(--text);">{{ link.label }}</a>
+    </sc-for>
+  </nav>
+
+  <div ref="{{ logo }}" style="position:fixed;top:20px;left:clamp(20px,4vw,52px);z-index:60;transform-origin:top left;will-change:transform;pointer-events:none;">
+    <div style="position:relative;display:inline-flex;padding:7px 15px 9px;">
+      <span data-border="t" style="position:absolute;top:0;left:0;right:0;height:1.6px;background:var(--text);transform-origin:left center;transform:scaleX(0);animation:vdrawx 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:720ms;"></span>
+      <span data-border="r" style="position:absolute;top:0;right:0;bottom:0;width:1.6px;background:var(--text);transform-origin:center top;transform:scaleY(0);animation:vdrawy 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:830ms;"></span>
+      <span data-border="b" style="position:absolute;left:0;right:0;bottom:0;height:1.6px;background:var(--text);transform-origin:right center;transform:scaleX(0);animation:vdrawx 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:940ms;"></span>
+      <span data-border="l" style="position:absolute;top:0;left:0;bottom:0;width:1.6px;background:var(--text);transform-origin:center bottom;transform:scaleY(0);animation:vdrawy 240ms cubic-bezier(.45,0,.15,1) both;animation-delay:1050ms;"></span>
+      <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;letter-spacing:0.015em;line-height:1;color:var(--text);display:inline-flex;">
+        <span data-letter style="display:inline-block;opacity:0;--hx:54px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:320ms;">V</span><span data-letter style="display:inline-block;opacity:0;--hx:36px;--hy:96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:260ms;">I</span><span data-letter style="display:inline-block;opacity:0;--hx:18px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:200ms;">L</span><span data-letter style="display:inline-block;opacity:0;--hx:0px;--hy:96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:140ms;">T</span><span data-letter style="display:inline-block;opacity:0;--hx:-18px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:200ms;">R</span><span data-letter style="display:inline-block;opacity:0;--hx:-36px;--hy:96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:260ms;">U</span><span data-letter style="display:inline-block;opacity:0;--hx:-54px;--hy:-96px;animation:vletter 560ms cubic-bezier(.2,1.35,.28,1) both;animation-delay:320ms;">M</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section data-screen-label="Hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:30px clamp(20px,4vw,52px) 40px;position:relative;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;">
+      <span style="font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;">Marketing que opera como sistema</span>
+      <span style="font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:right;">VILTRUM &nbsp;/&nbsp; AGÊNCIA DE MARKETING COM IA</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:28px;max-width:740px;">
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:clamp(1.25rem,2.6vw,2rem);line-height:1.28;letter-spacing:-0.01em;color:var(--faint);max-width:680px;text-wrap:pretty;">Não vendemos ferramentas. Entregamos <span style="color:var(--text);font-weight:600;">tráfego, redes, vídeo, landing page</span> e <span style="color:var(--text);font-weight:600;">atendimento por IA</span> integrados em um único fluxo.</h1>
+      <div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;">
+        <span>Role para começar</span>
+        <span style="display:inline-block;width:1px;height:24px;background:var(--line2);position:relative;overflow:hidden;"><span style="position:absolute;top:0;left:-1px;width:3px;height:8px;background:var(--red);animation:vdot 1.8s ease-in-out infinite;"></span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 QUEM SOMOS -->
+  <section id="studio" data-screen-label="Quem somos" style="scroll-margin-top:90px;padding:clamp(90px,12vw,170px) clamp(20px,4vw,52px);border-top:1px solid var(--line);background:var(--bg2);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:48px;">01 · Quem somos</span>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(40px,6vw,90px);align-items:start;">
+        <h2 data-reveal="left" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;text-wrap:balance;">Uma agência que opera <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">diferente</em>.</h2>
+        <div data-reveal="right" data-delay="1" style="display:flex;flex-direction:column;gap:22px;color:var(--faint);font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.6;max-width:520px;">
+          <p>A maior parte das agências vende gestão de tráfego. A gente entrega marketing completo — com IA integrada dentro da operação, não como discurso de venda.</p>
+          <p>A gente une o que geralmente vem separado: mídia paga, gestão de redes sociais, produção de vídeo, criação de landing page e atendimento automatizado. Um único fluxo, uma única prestação de contas, um único ponto de contato.</p>
+        </div>
+      </div>
+      <div data-reveal style="margin-top:clamp(60px,8vw,110px);display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);">
+        <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="4">
+          <div style="background:var(--bg2);padding:32px 26px;display:flex;flex-direction:column;gap:14px;">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:0.85rem;color:var(--red);letter-spacing:0.05em;">{{ p.n }}</span>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.15rem;letter-spacing:-0.01em;">{{ p.title }}</h3>
+            <p style="color:var(--muted);font-size:0.92rem;line-height:1.5;">{{ p.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 O PROBLEMA -->
+  <section id="problema" data-screen-label="Problema" style="scroll-margin-top:90px;padding:clamp(90px,12vw,170px) clamp(20px,4vw,52px);border-top:1px solid var(--line);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:28px;">02 · O problema</span>
+      <h2 data-reveal="left" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;max-width:780px;text-wrap:balance;">Marketing digital que não converte em <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">cliente</em>.</h2>
+      <p data-reveal="left" data-delay="1" style="margin-top:22px;color:var(--faint);font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.6;max-width:640px;">A dor não é falta de estratégia sofisticada. É gargalo operacional — e ele é sempre parecido.</p>
+      <div style="margin-top:clamp(48px,6vw,70px);display:flex;flex-direction:column;border-top:1px solid var(--line);">
+        <sc-for list="{{ pains }}" as="pn" hint-placeholder-count="4">
+          <div data-reveal="{{ pn.dir }}" data-delay="{{ $index }}" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(20px,4vw,60px);padding:clamp(24px,3vw,36px) 0;border-bottom:1px solid var(--line);align-items:baseline;">
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(1.1rem,1.6vw,1.4rem);letter-spacing:-0.01em;">{{ pn.title }}</h3>
+            <p style="color:var(--muted);font-size:clamp(0.98rem,1.15vw,1.05rem);line-height:1.6;max-width:560px;">{{ pn.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SERVIÇOS -->
+  <section id="services" data-screen-label="Servicos" style="scroll-margin-top:90px;padding:clamp(90px,12vw,170px) clamp(20px,4vw,52px);border-top:1px solid var(--line);background:var(--bg2);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(48px,6vw,80px);">
+        <div data-reveal>
+          <span style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:28px;">03 · Como operamos</span>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;max-width:760px;text-wrap:balance;">Seis entregas. Um único <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">time</em>.</h2>
+        </div>
+        <span data-reveal style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);">Serviço completo, equipe única</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);">
+        <sc-for list="{{ services }}" as="svc" hint-placeholder-count="6">
+          <div data-reveal="{{ svc.dir }}" data-delay="{{ $index }}" data-tilt style="position:relative;overflow:hidden;background:var(--bg);padding:clamp(28px,3vw,40px);min-height:280px;display:flex;flex-direction:column;transition:background .5s ease,transform .25s ease;" style-hover="background:var(--card);">
+            <div data-spot style="position:absolute;inset:0;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(229,36,27,0.16), transparent 60%);pointer-events:none;"></div>
+            <div style="position:relative;display:flex;justify-content:space-between;align-items:center;margin-bottom:auto;">
+              <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.9rem;color:var(--red);letter-spacing:0.05em;">{{ svc.n }}</span>
+              <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">{{ svc.cat }}</span>
+            </div>
+            <h3 style="position:relative;margin-top:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(1.25rem,1.7vw,1.5rem);line-height:1.18;letter-spacing:-0.01em;">{{ svc.title }}</h3>
+            <p style="position:relative;margin-top:16px;color:var(--muted);font-size:0.95rem;line-height:1.55;">{{ svc.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div data-reveal style="margin-top:clamp(70px,9vw,120px);overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;">
+      <div style="display:flex;width:max-content;animation:vmarquee 30s linear infinite;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(1.5rem,2.8vw,2.4rem);letter-spacing:-0.01em;color:var(--text);text-transform:uppercase;">
+        <span style="padding:0 28px;">Tráfego pago</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Redes sociais</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Produção de vídeo</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Landing page</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Olivia · IA</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Dashboard</span><span style="padding:0 28px;color:var(--red);">✶</span>
+        <span style="padding:0 28px;">Tráfego pago</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Redes sociais</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Produção de vídeo</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Landing page</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Olivia · IA</span><span style="padding:0 28px;color:var(--red);">✶</span><span style="padding:0 28px;">Dashboard</span><span style="padding:0 28px;color:var(--red);">✶</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAIS -->
+  <section id="differentiators" data-screen-label="Diferenciais" style="scroll-margin-top:90px;padding:clamp(90px,12vw,160px) clamp(20px,4vw,52px);border-top:1px solid var(--line);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:28px;">Por que Viltrum</span>
+      <h2 data-reveal="down" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;max-width:820px;margin-bottom:clamp(48px,6vw,80px);text-wrap:balance;">Não somos mais uma <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">agência</em>.</h2>
+      <div style="display:flex;flex-direction:column;border-top:1px solid var(--line);">
+        <div data-reveal="down" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);padding:16px 0;">
+          <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Agência tradicional</span>
+          <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);">Viltrum</span>
+        </div>
+        <sc-for list="{{ differentiators }}" as="d" hint-placeholder-count="4">
+          <div data-reveal="down" data-delay="{{ $index }}" data-diff-row style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);padding:clamp(22px,3vw,32px) 0;border-top:1px solid var(--line);align-items:center;">
+            <span style="position:relative;display:inline-block;color:var(--muted);font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.4;">{{ d.them }}<span data-strike style="position:absolute;left:0;top:50%;transform:translateY(-50%);height:1.6px;width:0%;background:var(--red);transition:width .5s cubic-bezier(.65,0,.35,1);"></span></span>
+            <span data-us style="display:flex;align-items:center;gap:14px;color:var(--text);font-weight:600;font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.4;opacity:0;transform:translateX(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1);"><span style="width:6px;height:6px;background:var(--red);flex:none;"></span>{{ d.us }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA NA PRÁTICA -->
+  <section id="process" data-screen-label="Processo" style="scroll-margin-top:90px;padding:clamp(90px,12vw,170px) clamp(20px,4vw,52px);border-top:1px solid var(--line);background:var(--bg2);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:28px;">Na prática</span>
+      <h2 data-reveal style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;max-width:820px;margin-bottom:clamp(48px,6vw,80px);text-wrap:balance;">Você deixa de gerenciar cinco <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">relacionamentos</em>.</h2>
+      <div style="display:flex;flex-direction:column;border-top:1px solid var(--line);">
+        <sc-for list="{{ steps }}" as="step" hint-placeholder-count="4">
+          <div data-reveal="{{ step.dir }}" data-delay="{{ $index }}" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(20px,4vw,60px);padding:clamp(28px,4vw,46px) 0;border-bottom:1px solid var(--line);align-items:baseline;">
+            <div style="display:flex;align-items:baseline;gap:20px;">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2.5rem,5vw,4.2rem);line-height:0.9;color:var(--line2);">{{ step.n }}</span>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(1.3rem,2vw,1.8rem);letter-spacing:-0.01em;">{{ step.title }}</h3>
+            </div>
+            <p style="color:var(--muted);font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.6;max-width:560px;">{{ step.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- OLIVIA -->
+  <section id="olivia" data-screen-label="Olivia" style="scroll-margin-top:90px;padding:clamp(90px,12vw,170px) clamp(20px,4vw,52px);border-top:1px solid var(--line);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:28px;">04 · Olivia</span>
+      <h2 data-reveal style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;max-width:780px;text-wrap:balance;">A IA que atende enquanto você <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">trabalha</em>.</h2>
+      <p data-reveal data-delay="1" style="margin-top:22px;color:var(--faint);font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.6;max-width:640px;">Recebe lead, entende o pedido, qualifica e agenda — sem robô óbvio, sem sensação de bot.</p>
+      <div style="margin-top:clamp(56px,7vw,90px);display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(40px,6vw,80px);align-items:start;">
+        <div data-reveal="left" style="background:var(--bg2);border:1px solid var(--line);padding:clamp(24px,3vw,32px);display:flex;flex-direction:column;gap:16px;">
+          <span style="font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">WhatsApp · Terça, 14:32</span>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+            <div style="align-self:flex-start;max-width:88%;background:var(--card);border:1px solid var(--line);padding:12px 16px;font-size:0.92rem;line-height:1.45;color:var(--text);">Oi, vi o anúncio de vocês. Quanto fica limpeza + clareamento?</div>
+            <div style="align-self:flex-end;max-width:88%;background:var(--red);padding:12px 16px;font-size:0.92rem;line-height:1.45;color:#fff;">Oi! Que bom que chegou por aqui. Antes de te passar o valor exato, posso entender rapidinho o que você precisa? O clareamento pode ser a laser em consultório ou moldeira para casa — tem valores diferentes. Qual dos dois te interessa mais?</div>
+            <div style="align-self:flex-start;max-width:88%;background:var(--card);border:1px solid var(--line);padding:12px 16px;font-size:0.92rem;line-height:1.45;color:var(--text);">A laser mesmo. Já fiz limpeza recente, mas queria fazer as duas coisas juntas.</div>
+            <div style="align-self:flex-end;max-width:88%;background:var(--red);padding:12px 16px;font-size:0.92rem;line-height:1.45;color:#fff;">Perfeito. Nesse formato o valor combinado sai R$ 890, com sessão única de cerca de 1h30. Consigo te encaixar essa semana quinta 14h, sexta 10h ou sábado 9h. Qual funciona melhor?</div>
+          </div>
+        </div>
+        <div data-reveal="right" style="display:flex;flex-direction:column;border-top:1px solid var(--line);">
+          <sc-for list="{{ olivia }}" as="o" hint-placeholder-count="3">
+            <div style="padding:26px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px;">
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.15rem;letter-spacing:-0.01em;">{{ o.title }}</h3>
+              <p style="color:var(--muted);font-size:0.95rem;line-height:1.55;">{{ o.desc }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section id="cases" data-screen-label="Cases" style="scroll-margin-top:90px;border-top:1px solid var(--line);background:var(--bg2);">
+    <div style="padding:clamp(90px,12vw,160px) clamp(20px,4vw,52px) clamp(48px,6vw,70px);max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:28px;">05 · Cases</span>
+      <h2 data-reveal style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;max-width:760px;text-wrap:balance;">Resultado real, não <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">número de vaidade</em>.</h2>
+    </div>
+    <div ref="{{ casesWrap }}" style="position:relative;height:260vh;">
+      <div ref="{{ casesPin }}" style="position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;display:flex;align-items:center;">
+        <div ref="{{ casesTrack }}" style="display:flex;gap:clamp(20px,3vw,36px);padding:0 clamp(20px,4vw,52px);will-change:transform;">
+          <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="3">
+            <div style="flex:none;width:min(74vw,600px);min-height:420px;background:var(--bg);border:1px solid var(--line);padding:clamp(32px,4vw,52px);display:flex;flex-direction:column;">
+              <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">{{ cs.tag }}</span>
+              <h3 style="margin-top:28px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(1.4rem,2.4vw,2rem);line-height:1.2;letter-spacing:-0.01em;">{{ cs.title }}</h3>
+              <p style="margin-top:18px;color:var(--muted);font-size:1rem;line-height:1.55;max-width:460px;">{{ cs.desc }}</p>
+              <div style="margin-top:auto;padding-top:32px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:28px;">
+                <div>
+                  <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.4rem);color:var(--red);letter-spacing:-0.01em;">{{ cs.metric }}</span>
+                  <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;">{{ cs.metricLabel }}</div>
+                </div>
+                <div>
+                  <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.4rem);color:var(--text);letter-spacing:-0.01em;">{{ cs.metric2 }}</span>
+                  <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;">{{ cs.metric2Label }}</div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+          <div style="flex:none;width:1px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section data-screen-label="Dashboard" style="padding:clamp(90px,12vw,160px) clamp(20px,4vw,52px);border-top:1px solid var(--line);background:var(--red);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <div data-reveal style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:clamp(40px,5vw,60px);">
+        <span style="font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:600;">Painel · Campanha ativa</span>
+        <span style="font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.65);">Atualizado agora</span>
+      </div>
+      <div data-reveal="scale" data-stats style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(32px,5vw,60px);">
+        <sc-for list="{{ panel }}" as="pv" hint-placeholder-count="4">
+          <div>
+            <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2.2rem,4.6vw,3.8rem);line-height:1;letter-spacing:-0.01em;color:#fff;">
+              <span>{{ pv.prefix }}</span><span data-count="{{ pv.value }}" data-decimals="{{ pv.decimals }}">0</span><span>{{ pv.suffix }}</span>
+            </div>
+            <div style="margin-top:14px;font-size:0.9rem;letter-spacing:0.02em;color:rgba(255,255,255,0.8);">{{ pv.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <p data-reveal style="margin-top:clamp(40px,5vw,60px);color:rgba(255,255,255,0.75);font-size:0.95rem;line-height:1.5;max-width:560px;">Exemplo real de painel de campanha ativa. Todo cliente acompanha esses números em tempo real, sem esperar reunião.</p>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section id="plans" data-screen-label="Planos" style="scroll-margin-top:90px;padding:clamp(90px,12vw,160px) clamp(20px,4vw,52px);border-top:1px solid var(--line);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:28px;">Planos</span>
+      <h2 data-reveal style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.05;letter-spacing:-0.02em;max-width:760px;margin-bottom:16px;text-wrap:balance;">Dois caminhos. Um mesmo <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.06em;">padrão</em>.</h2>
+      <p data-reveal data-delay="1" style="color:var(--faint);font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.6;max-width:640px;margin-bottom:clamp(48px,6vw,70px);">A escolha depende de uma pergunta: você consegue responder o WhatsApp durante o horário comercial, ou vai precisar de atendimento automatizado?</p>
+      <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(20px,3vw,28px);align-items:start;">
+        <sc-for list="{{ plans }}" as="pl" hint-placeholder-count="2">
+          <div data-reveal data-delay="{{ $index }}" data-magnet="{{ pl.reco }}" style="position:relative;display:flex;flex-direction:column;gap:24px;padding:clamp(32px,4vw,40px);background:var(--bg2);border:1px solid {{ pl.border }};transition:transform .3s ease;">
+            <sc-if value="{{ pl.reco }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;top:-1px;right:20px;transform:translateY(-50%);background:var(--red);color:#fff;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;padding:5px 10px;">Recomendado</span>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.4rem;letter-spacing:-0.01em;">{{ pl.name }}</span>
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:1.6rem;color:var(--red);letter-spacing:-0.01em;">{{ pl.price }}</span>
+              <span style="color:var(--muted);font-size:0.88rem;">{{ pl.tag }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:20px;">
+              <sc-for list="{{ pl.features }}" as="f" hint-placeholder-count="6">
+                <div style="display:flex;align-items:flex-start;gap:12px;">
+                  <span style="width:6px;height:6px;background:var(--red);flex:none;margin-top:7px;"></span>
+                  <span style="font-size:0.95rem;color:var(--faint);line-height:1.4;">{{ f }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <a href="#contact" style="margin-top:auto;padding-top:20px;border-top:1px solid var(--line);font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--red);text-decoration:none;font-weight:600;">Falar com time →</a>
+          </div>
+        </sc-for>
+      </div>
+      <p data-reveal style="max-width:900px;margin:24px auto 0;color:var(--muted);font-size:0.9rem;line-height:1.5;">Clientes do Essencial que quiserem incluir a Olivia podem migrar para o Completo — o valor final costuma ficar equivalente, com escopo muito maior.</p>
+
+      <div data-reveal style="margin-top:clamp(80px,10vw,120px);">
+        <span style="display:block;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Investimentos únicos</span>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(1.4rem,2.4vw,1.9rem);letter-spacing:-0.01em;margin-bottom:28px;">O que é cobrado fora do plano.</h3>
+        <div style="display:flex;flex-direction:column;border-top:1px solid var(--line);">
+          <sc-for list="{{ setups }}" as="s" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:1.1fr 1fr 2fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline;">
+              <span style="font-weight:600;font-size:0.95rem;">{{ s.name }}</span>
+              <span style="color:var(--red);font-family:'Archivo',sans-serif;font-weight:700;font-size:0.95rem;">{{ s.price }}</span>
+              <span style="color:var(--muted);font-size:0.9rem;line-height:1.4;">{{ s.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section data-screen-label="Trust" style="padding:clamp(80px,10vw,140px) clamp(20px,4vw,52px);border-top:1px solid var(--line);background:var(--bg2);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <span data-reveal style="display:block;font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:32px;">Marcas que confiam na Viltrum</span>
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,56px);align-items:center;">
+        <sc-for list="{{ clients }}" as="c" hint-placeholder-count="7">
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(1rem,1.6vw,1.3rem);letter-spacing:0.01em;color:var(--faint);opacity:0.7;">{{ c }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact" data-screen-label="CTA" style="scroll-margin-top:90px;padding:clamp(110px,16vw,220px) clamp(20px,4vw,52px);border-top:1px solid var(--line);text-align:center;">
+    <div style="max-width:920px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:34px;">
+      <span data-reveal style="font-size:0.74rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);font-weight:600;">Próximo passo</span>
+      <h2 data-reveal style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:clamp(2.6rem,7vw,6rem);line-height:1;letter-spacing:-0.03em;">Vamos <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--red);font-size:1.05em;">conversar.</em></h2>
+      <p data-reveal data-delay="1" style="color:var(--faint);font-size:clamp(1.05rem,1.4vw,1.25rem);line-height:1.6;max-width:560px;">Trinta minutos de conversa. Sem compromisso. Você conta o cenário do seu negócio, a gente devolve um diagnóstico honesto — plano, sem plano, ou nenhum dos dois.</p>
+      <a data-reveal data-delay="2" href="mailto:contato@viltrum.com.br" style="margin-top:8px;display:inline-flex;align-items:center;gap:14px;background:var(--red);color:#fff;text-decoration:none;font-weight:600;font-size:1rem;letter-spacing:0.02em;padding:18px 34px;transition:transform .3s ease,opacity .3s ease;" style-hover="transform:translateY(-2px);opacity:0.92;">Falar com a Viltrum <span style="font-family:'Archivo',sans-serif;">→</span></a>
+      <div data-reveal data-delay="3" style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;color:var(--muted);font-size:0.85rem;">
+        <span>contato@viltrum.com.br</span><span>@viltrum</span><span>viltrum.com.br</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid var(--line);padding:clamp(60px,8vw,90px) clamp(20px,4vw,52px) 48px;background:var(--bg2);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:48px;">
+        <div style="max-width:360px;">
+          <div style="border:1.6px solid var(--text);padding:8px 16px 10px;display:inline-block;"><span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:26px;letter-spacing:0.015em;line-height:1;">VILTRUM</span></div>
+          <p style="margin-top:22px;color:var(--muted);font-size:0.95rem;line-height:1.6;">Marketing que opera como sistema. Tráfego, redes, vídeo, landing page e atendimento por IA em um único fluxo.</p>
+        </div>
+        <div style="display:flex;gap:clamp(40px,6vw,90px);flex-wrap:wrap;">
+          <sc-for list="{{ footerCols }}" as="col" hint-placeholder-count="2">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <span style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">{{ col.title }}</span>
+              <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="4">
+                <a href="{{ it.href }}" style="color:var(--faint);text-decoration:none;font-size:0.95rem;" style-hover="color:var(--text);">{{ it.label }}</a>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin-top:clamp(48px,7vw,80px);padding-top:28px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;color:var(--muted);font-size:0.78rem;letter-spacing:0.06em;">
+        <span>© 2026 Viltrum. Todos os direitos reservados.</span>
+        <span>viltrum.com.br</span>
+      </div>
+    </div>
+  </footer>
+
+  <div ref="{{ pre }}" style="position:fixed;inset:0;z-index:50;background:#0B0A0A;transition:opacity .7s ease;pointer-events:none;"></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;obsidian&quot;,&quot;forge&quot;],&quot;default&quot;:&quot;obsidian&quot;,&quot;tsType&quot;:&quot;'obsidian' | 'forge'&quot;},&quot;preloader&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  root = React.createRef();
+  pre = React.createRef();
+  logo = React.createRef();
+  nav = React.createRef();
+  bar = React.createRef();
+  casesWrap = React.createRef();
+  casesPin = React.createRef();
+  casesTrack = React.createRef();
+
+  renderVals() {
+    return {
+      root: this.root, pre: this.pre, logo: this.logo, nav: this.nav, bar: this.bar,
+      casesWrap: this.casesWrap, casesPin: this.casesPin, casesTrack: this.casesTrack,
+      navLinks: [
+        { label: 'Quem somos', href: '#studio' },
+        { label: 'Serviços', href: '#services' },
+        { label: 'Olivia', href: '#olivia' },
+        { label: 'Cases', href: '#cases' },
+        { label: 'Planos', href: '#plans' },
+        { label: 'Falar com o time', href: '#contact' },
+      ],
+      pillars: [
+        { n: '01', title: 'Solução completa', desc: 'Tudo o que o marketing digital do seu negócio precisa entra em um único plano gerenciado por um único time.' },
+        { n: '02', title: 'IA operacional', desc: 'A Olivia atende, qualifica e agenda leads 24 horas por dia. Sem robô óbvio. Sem sensação de bot.' },
+        { n: '03', title: 'Transparência real', desc: 'Dashboard próprio para acompanhar campanhas em tempo real, sem depender de reunião mensal.' },
+        { n: '04', title: 'Resultado mensurável', desc: 'Cases concretos com número real. ROAS, leads gerados, vendas atribuídas. Sem métrica de vaidade.' },
+      ],
+      pains: [
+        { dir: 'left', title: 'Lead que chega e não é respondido a tempo.', desc: 'Enquanto você atende cliente presencial durante o dia, o WhatsApp acumula mensagem. O lead esfria, vai para o concorrente, ou desiste.' },
+        { dir: 'right', title: 'Tráfego pago rodando sem qualificação.', desc: 'A campanha gera mensagens no mês, mas a maioria é curiosidade sem intenção. Sobra pouco tempo para os que realmente comprariam.' },
+        { dir: 'left', title: 'Cinco fornecedores para o mesmo resultado.', desc: 'Um faz Instagram, outro faz vídeo, outro faz site, outro faz tráfego. Nenhum conversa com o outro — e no fim, ninguém se responsabiliza pelo resultado.' },
+        { dir: 'right', title: 'Relatório que não diz nada útil.', desc: 'Alcance, impressão, engajamento. Números que não pagam boleto, sem previsibilidade sobre o que esperar do próximo mês.' },
+      ],
+      services: [
+        { n: '01', cat: 'Mensal', dir: 'left', title: 'Tráfego pago', desc: 'Gestão de campanhas Meta Ads e Google Ads com foco em conversão real, não em alcance de vaidade.' },
+        { n: '02', cat: 'Mensal', dir: 'right', title: 'Gestão de redes sociais', desc: 'Estratégia, planejamento e execução de conteúdo no feed, stories e reels.' },
+        { n: '03', cat: 'Mensal', dir: 'left', title: 'Produção de vídeo', desc: 'Roteiro, gravação e edição de vídeos verticais para anúncio e conteúdo orgânico.' },
+        { n: '04', cat: 'Setup único', dir: 'right', title: 'Landing page', desc: 'Página institucional ou de campanha desenvolvida sob medida, otimizada para conversão.' },
+        { n: '05', cat: 'Setup + mensal', dir: 'left', title: 'Olivia · IA de atendimento', desc: 'Atendimento e qualificação de lead 24 horas. Integração com CRM ou sistema do cliente.' },
+        { n: '06', cat: 'Incluso', dir: 'right', title: 'Dashboard próprio', desc: 'Acesso em tempo real às métricas da operação. Transparência total, sem esperar reunião.' },
+      ],
+      differentiators: [
+        { us: 'Um time só, uma prestação de contas', them: 'Cinco fornecedores, nenhum se responsabiliza' },
+        { us: 'Olivia responde e qualifica 24 horas por dia', them: 'Lead esfria esperando resposta no WhatsApp' },
+        { us: 'Dashboard em tempo real, com ROAS e leads reais', them: 'Relatório de alcance e engajamento' },
+        { us: 'Atendimento por IA sem sensação de bot', them: 'Robô óbvio que espanta o cliente' },
+      ],
+      steps: [
+        { n: '01', dir: 'left', title: 'Diagnóstico', desc: 'Entendemos o gargalo real do seu negócio: atendimento, qualificação de lead ou operação fragmentada entre fornecedores.' },
+        { n: '02', dir: 'right', title: 'Estratégia', desc: 'Definimos o plano: tráfego, redes, vídeo, landing page e Olivia — só o que faz sentido pro seu caso.' },
+        { n: '03', dir: 'left', title: 'Produção', desc: 'Time único monta campanhas, conteúdo, vídeos e configura a Olivia em poucas semanas.' },
+        { n: '04', dir: 'right', title: 'Acompanhamento', desc: 'Dashboard em tempo real e reuniões mensais de alinhamento. Sem esperar relatório pra saber o que está acontecendo.' },
+      ],
+      olivia: [
+        { title: 'Qualificação real', desc: 'Filtra curiosos de compradores antes de você olhar o WhatsApp. Você só vê lead pronto.' },
+        { title: 'Integração operacional', desc: 'Conecta com sua agenda, seu CRM ou sistema próprio. Atende consultando dados reais.' },
+        { title: '24 horas, todos os dias', desc: 'Trabalha domingo à noite, feriado, madrugada. Nenhum lead esfria por espera de resposta.' },
+      ],
+      cases: [
+        { tag: 'Odontologia · Oliveira/MG', title: 'Instituto VJ — ROAS de 14,95x em dois meses', desc: 'Clínica em cidade de pequeno porte. Seis campanhas em dois meses — funil de topo para procedimentos de alto ticket, remarketing e branding sazonal.', metric: '14,95x', metricLabel: 'ROAS em 2 meses', metric2: 'R$ 9.850', metric2Label: 'faturados com R$ 658 investidos' },
+        { tag: 'Indústria siderúrgica · Goiás', title: 'Rei do Aço — expansão geográfica qualificada', desc: 'Distribuidora expandindo alcance para novas cidades. Lead Ad para captura qualificada e Click-to-WhatsApp para conversa direta, com segmentação geográfica.', metric: 'R$ 1,50', metricLabel: 'custo por lead qualificado', metric2: '20k', metric2Label: 'pessoas alcançadas no ciclo' },
+        { tag: 'Comunicação visual · Poços de Caldas', title: 'Comunynk — atendimento que roda sozinho', desc: 'Gráfica com alto volume de WhatsApp consumindo horas do dono. Olivia integrada ao sistema interno, junto com gestão de mídia e produção de vídeo.', metric: '24h', metricLabel: 'atendimento contínuo com Olivia', metric2: '100%', metric2Label: 'da dor operacional endereçada' },
+      ],
+      panel: [
+        { prefix: 'R$ ', value: 1847, decimals: 0, suffix: '', label: 'Investido' },
+        { prefix: '', value: 18402, decimals: 0, suffix: '', label: 'Alcance' },
+        { prefix: '', value: 142, decimals: 0, suffix: '', label: 'Conversas' },
+        { prefix: '', value: 37, decimals: 0, suffix: '', label: 'Qualificadas' },
+      ],
+      plans: [
+        { name: 'Essencial', price: 'R$ 1.500/mês', tag: 'Você responde o WhatsApp no horário comercial', reco: false, border: 'var(--line)', features: ['Tráfego pago em Meta Ads e Google Ads', '4 posts mensais no feed do Instagram', '2 vídeos mensais para anúncios', 'Configuração de pixel e conversões', 'Relatório mensal em PDF', 'Dashboard próprio de acompanhamento', 'Uma reunião mensal de alinhamento'] },
+        { name: 'Completo', price: 'R$ 2.500/mês', tag: 'Você precisa de atendimento automatizado', reco: true, border: 'var(--red)', features: ['Tudo do Essencial', 'Gestão social completa (feed, stories, reels)', '8 vídeos mensais para anúncios e conteúdo', 'Olivia · atendimento 24h com IA', 'Funil em dois níveis (topo e remarketing)', 'Diagnóstico estratégico inicial', 'Duas reuniões mensais de alinhamento'] },
+      ],
+      setups: [
+        { name: 'Setup Olivia', price: 'R$ 1.500 a R$ 3.000', note: 'Implementação e integração da IA de atendimento. Obrigatório no Plano Completo.' },
+        { name: 'Landing page', price: 'R$ 1.200 a R$ 2.500', note: 'Página institucional ou de campanha. Pagamento único, 50% na entrada. Opcional.' },
+        { name: 'Google Meu Negócio', price: 'R$ 400 a R$ 800', note: 'Configuração completa do perfil no Google. Setup único.' },
+        { name: 'Integrações customizadas', price: 'Sob consulta', note: 'Conexão com sistemas proprietários, CRMs específicos ou ERPs.' },
+        { name: 'Investimento em mídia', price: 'Definido pelo cliente', note: 'Aportado direto na conta de anúncio do cliente. Não passa pela Viltrum.' },
+      ],
+      clients: ['Instituto VJ', 'Rei do Aço', 'Comunynk', 'Dra. Vitória', 'Strike Nutrition', 'Advogados Associados Lopes Gondim', 'Vortex Performance Oficina'],
+      footerCols: [
+        { title: 'Navegação', items: [
+          { label: 'Quem somos', href: '#studio' },
+          { label: 'Serviços', href: '#services' },
+          { label: 'Olivia', href: '#olivia' },
+          { label: 'Cases', href: '#cases' },
+          { label: 'Planos', href: '#plans' },
+        ] },
+        { title: 'Contato', items: [
+          { label: 'contato@viltrum.com.br', href: 'mailto:contato@viltrum.com.br' },
+          { label: '@viltrum', href: '#' },
+          { label: 'viltrum.com.br', href: '#' },
+          { label: 'Falar com o time', href: '#contact' },
+        ] },
+      ],
+    };
+  }
+
+  componentDidMount() {
+    this.applyTheme();
+    this.runIntro();
+    this.bindScroll();
+    this.bindReveals();
+    this.bindTilt();
+    this.bindMagnet();
+    this.bindDiffRows();
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.theme !== this.props.theme) this.applyTheme();
+  }
+
+  componentWillUnmount() {
+    if (this._raf) cancelAnimationFrame(this._raf);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onResize);
+    if (this._io) this._io.disconnect();
+    if (this._diffIo) this._diffIo.disconnect();
+    (this._tiltCleanups || []).forEach((fn) => fn());
+    if (this._magnetCleanup) this._magnetCleanup();
+  }
+
+  applyTheme() {
+    const r = this.root.current;
+    if (!r) return;
+    const forge = this.props.theme === 'forge';
+    const v = forge ? {
+      '--bg': '#D81E1E', '--bg2': '#C81717', '--card': 'rgba(0,0,0,0.14)', '--text': '#FFFFFF',
+      '--muted': 'rgba(255,255,255,0.74)', '--faint': 'rgba(255,255,255,0.86)',
+      '--line': 'rgba(255,255,255,0.24)', '--line2': 'rgba(255,255,255,0.4)', '--red': '#0B0A0A', '--ink': '#D81E1E',
+    } : {
+      '--bg': '#0B0A0A', '--bg2': '#100E0E', '--card': '#151312', '--text': '#ECE7DF',
+      '--muted': '#8C857C', '--faint': '#B9B2A8', '--line': 'rgba(236,231,223,0.12)',
+      '--line2': 'rgba(236,231,223,0.22)', '--red': '#E5241B', '--ink': '#0B0A0A',
+    };
+    Object.entries(v).forEach(([k, val]) => r.style.setProperty(k, val));
+  }
+
+  runIntro() {
+    if (this._introRan) return; this._introRan = true;
+    const lg = this.logo.current, pre = this.pre.current;
+    if (!lg) return;
+    const borders = {};
+    lg.querySelectorAll('[data-border]').forEach((b) => { borders[b.getAttribute('data-border')] = b; });
+    const letters = [...lg.querySelectorAll('[data-letter]')];
+    const order = ['t', 'r', 'b', 'l'];
+    const span = (k) => (k === 't' || k === 'b');
+
+    if (this.props.preloader === false) {
+      letters.forEach((l) => { l.style.animation = 'none'; l.style.opacity = '1'; l.style.transform = 'none'; });
+      order.forEach((k) => { const b = borders[k]; if (b) { b.style.animation = 'none'; b.style.transform = span(k) ? 'scaleX(1)' : 'scaleY(1)'; } });
+      if (pre) pre.style.display = 'none';
+      return;
+    }
+
+    const bordersDone = 1290;
+    setTimeout(() => {
+      order.forEach((k) => { const b = borders[k]; if (b) { b.style.transition = 'background .45s ease'; b.style.background = 'var(--red)'; } });
+      setTimeout(() => { order.forEach((k) => { const b = borders[k]; if (b) b.style.background = 'var(--text)'; }); }, 140);
+    }, bordersDone);
+
+    if (pre) {
+      setTimeout(() => {
+        pre.style.opacity = '0';
+        setTimeout(() => { pre.style.display = 'none'; }, 700);
+      }, bordersDone + 240);
+    }
+  }
+
+  bindScroll() {
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const easeIO = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const update = () => {
+      this._raf = null;
+      const lg = this.logo.current, nv = this.nav.current, bar = this.bar.current;
+      const y = window.scrollY || window.pageYOffset || 0;
+      const vh = window.innerHeight, vw = window.innerWidth;
+      const morph = vh * 0.72;
+      const p = Math.min(1, Math.max(0, y / morph));
+      const e = easeIO(p);
+      if (lg) {
+        const dockW = lg.offsetWidth || 150;
+        const dockH = lg.offsetHeight || 50;
+        const heroW = Math.min(vw * 0.8, 860);
+        const heroScale = heroW / dockW;
+        const scaledH = dockH * heroScale;
+        const cs = getComputedStyle(lg);
+        const dockX = parseFloat(cs.left) || 40;
+        const dockY = parseFloat(cs.top) || 20;
+        const txHero = (vw - heroW) / 2 - dockX;
+        const tyHero = (vh - scaledH) / 2 - dockY;
+        const scale = lerp(heroScale, 1, e);
+        const tx = lerp(txHero, 0, e);
+        const ty = lerp(tyHero, 0, e);
+        lg.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+      }
+      if (nv) {
+        const op = Math.min(1, Math.max(0, (p - 0.28) / 0.4));
+        nv.style.opacity = op;
+        nv.style.pointerEvents = op > 0.5 ? 'auto' : 'none';
+      }
+      if (bar) {
+        const sp = document.documentElement.scrollHeight - vh;
+        bar.style.transform = `scaleX(${sp > 0 ? y / sp : 0})`;
+      }
+      const wrap = this.casesWrap.current, pin = this.casesPin.current, track = this.casesTrack.current;
+      if (wrap && pin && track) {
+        const rect = wrap.getBoundingClientRect();
+        const wrapTop = rect.top + y;
+        const scrollDist = wrap.offsetHeight - vh;
+        if (scrollDist > 0) {
+          if (y < wrapTop) { pin.style.position = 'absolute'; pin.style.top = '0px'; }
+          else if (y > wrapTop + scrollDist) { pin.style.position = 'absolute'; pin.style.top = scrollDist + 'px'; }
+          else { pin.style.position = 'fixed'; pin.style.top = '0px'; }
+          const cp = Math.min(1, Math.max(0, (y - wrapTop) / scrollDist));
+          const maxShift = Math.max(0, track.scrollWidth - vw);
+          track.style.transform = `translateX(${-cp * maxShift}px)`;
+        }
+      }
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(update); };
+    this._onResize = () => update();
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onResize);
+    update();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => update());
+    setTimeout(update, 400);
+  }
+
+  bindReveals() {
+    const r = this.root.current;
+    if (!r) return;
+    const els = r.querySelectorAll('[data-reveal]');
+    const startTf = {
+      up: 'translateY(28px)', down: 'translateY(-28px)',
+      left: 'translateX(-46px)', right: 'translateX(46px)',
+      scale: 'scale(0.92)',
+    };
+    els.forEach((el) => {
+      const dir = el.getAttribute('data-reveal') || 'up';
+      el.style.opacity = '0';
+      el.style.transform = startTf[dir] || startTf.up;
+      el.style.transition = 'opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1)';
+      const d = el.getAttribute('data-delay');
+      if (d) el.style.transitionDelay = (parseFloat(d) * 80) + 'ms';
+    });
+    this._io = new IntersectionObserver((ents) => {
+      ents.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'none';
+          if (en.target.hasAttribute('data-stats')) this.countUp(en.target);
+          this._io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    els.forEach((el) => this._io.observe(el));
+  }
+
+  countUp(container) {
+    const nums = container.querySelectorAll('[data-count]');
+    nums.forEach((el) => {
+      const target = parseFloat(el.getAttribute('data-count')) || 0;
+      const dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      const dur = 1500;
+      const t0 = performance.now();
+      const fmt = (v) => dec > 0 ? v.toFixed(dec) : Math.round(v).toLocaleString('pt-BR');
+      const step = (t) => {
+        const k = Math.min(1, (t - t0) / dur);
+        const e = 1 - Math.pow(1 - k, 3);
+        el.textContent = fmt(target * e);
+        if (k < 1) requestAnimationFrame(step);
+        else el.textContent = fmt(target);
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  bindDiffRows() {
+    const r = this.root.current;
+    if (!r) return;
+    const rows = r.querySelectorAll('[data-diff-row]');
+    this._diffIo = new IntersectionObserver((ents) => {
+      ents.forEach((en) => {
+        if (!en.isIntersecting) return;
+        const row = en.target;
+        const strike = row.querySelector('[data-strike]');
+        const us = row.querySelector('[data-us]');
+        setTimeout(() => { if (strike) strike.style.width = '100%'; }, 550);
+        setTimeout(() => { if (us) { us.style.opacity = '1'; us.style.transform = 'translateX(0)'; } }, 1050);
+        this._diffIo.unobserve(row);
+      });
+    }, { threshold: 0.4 });
+    rows.forEach((row) => this._diffIo.observe(row));
+  }
+
+  bindTilt() {
+    const r = this.root.current;
+    if (!r) return;
+    this._tiltCleanups = [];
+    r.querySelectorAll('[data-tilt]').forEach((card) => {
+      const spot = card.querySelector('[data-spot]');
+      const onMove = (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        card.style.transform = `perspective(900px) rotateX(${(0.5 - py) * 6}deg) rotateY(${(px - 0.5) * 8}deg)`;
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+        if (spot) spot.style.opacity = '1';
+      };
+      const onLeave = () => {
+        card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+        if (spot) spot.style.opacity = '0';
+      };
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      this._tiltCleanups.push(() => {
+        card.removeEventListener('mousemove', onMove);
+        card.removeEventListener('mouseleave', onLeave);
+      });
+    });
+  }
+
+  bindMagnet() {
+    const el = this.root.current && this.root.current.querySelector('[data-magnet="true"]');
+    if (!el) return;
+    const onMove = (e) => {
+      const rect = el.getBoundingClientRect();
+      const mx = (e.clientX - rect.left - rect.width / 2) * 0.06;
+      const my = (e.clientY - rect.top - rect.height / 2) * 0.06;
+      el.style.transform = `translate(${mx}px, ${my}px)`;
+    };
+    const onLeave = () => { el.style.transform = 'translate(0,0)'; };
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseleave', onLeave);
+    this._magnetCleanup = () => {
+      el.removeEventListener('mousemove', onMove);
+      el.removeEventListener('mouseleave', onLeave);
+    };
+  }
+}
+</script>
+</body>
+</html>
